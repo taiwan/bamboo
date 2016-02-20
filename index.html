@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width">
+	<title>台灣竹會</title>
+</head>
+<body>
+	<header>
+		<h1>台灣竹會</h1>
+	</header>
+	<main>
+		<section>
+			<h2>竹‧助網誌</h2>
+			<p><a href="http://bbhelptw.blogspot.tw/">bamboo‧help</a></p>
+		</section>
+		<section>
+			<h2>電子報 TBS Paper</h2>
+			<p><a href="https://drive.google.com/folderview?id=0B4vBBE9dwOpsbEZOTUdjWjljd0k&usp=sharing">各期電子報</a></p>
+		</section>
+		<section id="page">
+			<h2>Facebook Page</h2>
+		</section>
+	</main>
+	<footer>
+		https://github.com/taiwan/bamboo
+	</footer>
+	<script>
+	fetch('https://graph.facebook.com/v2.5/TaiwanBambooSociety/feed?access_token=107244996094808|hrs5uGNHXE0K26ch0Z5wEW-_4Lg&fields=link,picture,message,story')
+		.then(response => response.json())
+		.then(posts => {
+			console.log(posts);
+			var content = '';
+			posts.data.forEach(function(post, index, array) {
+				content += `<li>
+					<a href="https://facebook.com/${post.id} ">
+						${post.picture && `<img src="${post.picture}" alt="${post.id}"/>`}
+						<p>${post.message || post.story || post.link}<p/>
+					</a>
+				</li>`;
+			});
+			return `<ul>${content}</ul>`;
+		})
+		.catch(error => "<p>擷取專頁貼文失敗，請稍後重試！</p>")
+		.then(content => document.getElementById('page').insertAdjacentHTML('beforeend', content));
+	</script>
+</body>
+</html>
